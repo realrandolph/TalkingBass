@@ -19,7 +19,7 @@ jobs:
       - name: Install LV2 development headers
         run: |
           sudo apt-get update
-          sudo apt-get install --yes build-essential liblv2-dev pkg-config
+          sudo apt-get install --yes build-essential lv2-dev pkg-config
       - name: Build LV2 bundle
         run: make bundle CC=gcc
       - uses: actions/upload-artifact@v4
@@ -65,3 +65,45 @@ jobs:
           name: talkingbass-windows-x86_64
           path: build/
           if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [linux, macos, windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download platform bundles
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+      - name: Package release archives
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZIP_DEFLATED, ZipFile
+
+          bundles = (
+              "talkingbass-linux-x86_64",
+              "talkingbass-macos-universal",
+              "talkingbass-windows-x86_64",
+          )
+          for name in bundles:
+              bundle = Path("release-artifacts", name, "talkingbass.lv2")
+              if not bundle.is_dir():
+                  raise SystemExit(f"Missing bundle directory: {bundle}")
+              with ZipFile(f"{name}.zip", "w", ZIP_DEFLATED) as archive:
+                  for file in sorted(bundle.rglob("*")):
+                      if file.is_file():
+                          archive.write(file, file.relative_to(bundle.parent))
+          PY
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          overwrite_files: true
+          files: |
+            talkingbass-linux-x86_64.zip
+            talkingbass-macos-universal.zip
+            talkingbass-windows-x86_64.zip

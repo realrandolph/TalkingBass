@@ -17,6 +17,16 @@ Install that folder in a location scanned by your DAW's LV2 host, then restart
 or rescan the host. On Windows, the DAW must support LV2 instruments and its
 LV2 search path must include the bundle's parent directory.
 
+## Releases
+
+Push a version tag such as `v1.0.0` to build all platforms and publish a GitHub
+Release with one installable `.lv2` ZIP per platform:
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
+```
+
 ## Build from source
 
 Requirements: a C99 compiler, GNU Make, `pkg-config`/`pkgconf`, and the LV2
