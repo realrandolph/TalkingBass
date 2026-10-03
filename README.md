@@ -15,18 +15,32 @@ For a newer version, visit [Releases](https://github.com/realrandolph/TalkingBas
 
 ## Install on Windows
 
-1. Download **talkingbass-windows-x86_64.zip**, then right-click it and choose **Extract All**.
-2. Press **Win+R**, type `%APPDATA%\LV2`, and press **Enter**. If Windows says the folder does not exist, open `%APPDATA%` instead and create a folder named `LV2`.
-3. Move the extracted **talkingbass.lv2** folder into `LV2`. Keep the folder intact; it contains the plugin and files it needs.
-4. Restart your music app, or use its plugin-rescan option.
+1. Download [**talkingbass-windows-x86_64.zip**](https://github.com/realrandolph/TalkingBass/releases/download/v1.0.0-rc1/talkingbass-windows-x86_64.zip). Your browser will usually put it in **Downloads**.
+2. Open File Explorer (press **Windows+E**) and click **Downloads** in the left-hand list.
+3. Find **talkingbass-windows-x86_64.zip**. Right-click it, choose **Extract All…**, then click **Extract** in the window that appears. Windows will open the extracted files.
+4. In the extracted files, click the folder named **talkingbass.lv2** once, then press **Ctrl+C**. This copies the whole plugin folder.
+5. Open another File Explorer window (press **Windows+E** again). Click the long address bar across the top of the window—not the search box—type `%APPDATA%`, and press **Enter**. You should now be in a folder named **Roaming**.
+6. Look for a folder named **LV2**. If it is there, double-click it. If it is not there, click **New** near the top of the window, choose **Folder**, type `LV2`, press **Enter**, then double-click the new **LV2** folder. (On some Windows versions the button is labelled **New folder**.)
+7. Click an empty area inside the **LV2** folder and press **Ctrl+V**. The **talkingbass.lv2** folder will be copied here.
+8. Restart your music app, or use its plugin-rescan option.
 
-The final location should look like this:
+To check that it is in the right place, the address bar should end with `Roaming\LV2\talkingbass.lv2`, and you should see these three items inside:
+
+```text
+manifest.ttl
+talkingbass.dll
+talkingbass.ttl
+```
+
+The `.dll` is part of the plugin folder; do not open it or move it on its own.
+
+The complete location is:
 
 ```text
 %APPDATA%\LV2\talkingbass.lv2\
   manifest.ttl
-  talkingbass.ttl
   talkingbass.dll
+  talkingbass.ttl
 ```
 
 ## Install on macOS
