@@ -1,0 +1,67 @@
+name: Build LV2 bundles
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: Linux (x86_64)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install LV2 development headers
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes build-essential liblv2-dev pkg-config
+      - name: Build LV2 bundle
+        run: make bundle
+      - uses: actions/upload-artifact@v4
+        with:
+          name: talkingbass-linux-x86_64
+          path: build/
+          if-no-files-found: error
+
+  macos:
+    name: macOS (universal)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install LV2 development headers
+        run: brew install lv2 pkgconf
+      - name: Build universal LV2 bundle
+        run: make bundle MACOS_ARCHS='-arch x86_64 -arch arm64'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: talkingbass-macos-universal
+          path: build/
+          if-no-files-found: error
+
+  windows:
+    name: Windows (x86_64)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            make
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-lv2
+            mingw-w64-ucrt-x86_64-pkgconf
+      - name: Build Windows LV2 bundle
+        shell: msys2 {0}
+        run: make bundle
+      - uses: actions/upload-artifact@v4
+        with:
+          name: talkingbass-windows-x86_64
+          path: build/
+          if-no-files-found: error

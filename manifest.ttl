@@ -1,0 +1,17 @@
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://opencode.local/lv2/talkingbass>
+	a lv2:Plugin ;
+	lv2:binary <talkingbass.so> ;
+	rdfs:seeAlso <talkingbass.ttl> .
+
+<https://opencode.local/lv2/talkingbass#growl>
+	a lv2:Plugin ;
+	lv2:binary <talkingbass.so> ;
+	rdfs:seeAlso <talkingbass.ttl> .
+
+<https://opencode.local/lv2/talkingbass#whisper>
+	a lv2:Plugin ;
+	lv2:binary <talkingbass.so> ;
+	rdfs:seeAlso <talkingbass.ttl> .
