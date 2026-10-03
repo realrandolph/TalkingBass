@@ -21,7 +21,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes build-essential liblv2-dev pkg-config
       - name: Build LV2 bundle
-        run: make bundle
+        run: make bundle CC=gcc
       - uses: actions/upload-artifact@v4
         with:
           name: talkingbass-linux-x86_64
@@ -36,7 +36,7 @@ jobs:
       - name: Install LV2 development headers
         run: brew install lv2 pkgconf
       - name: Build universal LV2 bundle
-        run: make bundle MACOS_ARCHS='-arch x86_64 -arch arm64'
+        run: make bundle CC=clang MACOS_ARCHS='-arch x86_64 -arch arm64'
       - uses: actions/upload-artifact@v4
         with:
           name: talkingbass-macos-universal
@@ -59,7 +59,7 @@ jobs:
             mingw-w64-ucrt-x86_64-pkgconf
       - name: Build Windows LV2 bundle
         shell: msys2 {0}
-        run: make bundle
+        run: make bundle CC=gcc
       - uses: actions/upload-artifact@v4
         with:
           name: talkingbass-windows-x86_64
