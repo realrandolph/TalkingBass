@@ -103,6 +103,7 @@ jobs:
         with:
           generate_release_notes: true
           overwrite_files: true
+          prerelease: ${{ contains(github.ref_name, '-rc') }}
           files: |
             talkingbass-linux-x86_64.zip
             talkingbass-macos-universal.zip
